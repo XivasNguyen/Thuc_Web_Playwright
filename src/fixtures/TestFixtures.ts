@@ -3,6 +3,7 @@ import { HeaderComponent } from '../pages/components/HeaderComponent';
 import { FooterComponent } from '../pages/components/FooterComponent';
 import { TestDataFactory } from '../data/TestDataFactory';
 import { TestUtils } from '../utils/TestUtils';
+import { ReportUtils } from '../utils/ReportUtils';
 
 /**
  * Extended test fixtures with page objects and utilities
@@ -20,12 +21,24 @@ export interface TestFixtures {
  */
 export const test = base.extend<TestFixtures>({
   /**
-   * Page fixture - standard Playwright page
+   * Page fixture - standard Playwright page with enhanced reporting
    */
-  page: async ({ page }, use) => {
+  page: async ({ page }, use, testInfo) => {
+    // Initialize report directories
+    ReportUtils.initializeReportDirectories();
+
     // Set up page-level configurations
     await page.setViewportSize({ width: 1280, height: 720 });
-    
+
+    // Start trace recording
+    await ReportUtils.startTraceRecording(page, testInfo);
+
+    // Capture console logs
+    ReportUtils.captureConsoleLogs(page, testInfo);
+
+    // Capture network requests
+    ReportUtils.captureNetworkRequests(page, testInfo);
+
     // Add console error tracking
     const consoleErrors: string[] = [];
     page.on('console', msg => {
@@ -39,7 +52,7 @@ export const test = base.extend<TestFixtures>({
       page.on('request', request => {
         console.log(`→ ${request.method()} ${request.url()}`);
       });
-      
+
       page.on('response', response => {
         console.log(`← ${response.status()} ${response.url()}`);
       });
@@ -50,11 +63,32 @@ export const test = base.extend<TestFixtures>({
       console.error('Page error:', error.message);
     });
 
-    await use(page);
+    let testError: Error | undefined;
 
-    // Log console errors after test completion
-    if (consoleErrors.length > 0) {
-      console.warn('Console errors detected:', consoleErrors);
+    try {
+      await use(page);
+    } catch (error) {
+      testError = error as Error;
+      throw error;
+    } finally {
+      // Stop trace recording
+      await ReportUtils.stopTraceRecording(page, testInfo);
+
+      // Create failure report if test failed
+      if (testInfo.status === 'failed' || testError) {
+        await ReportUtils.createFailureReport(page, testInfo, testError);
+      }
+
+      // Log test result
+      ReportUtils.logTestResult(testInfo);
+
+      // Save test execution summary
+      ReportUtils.saveTestExecutionSummary(testInfo);
+
+      // Log console errors after test completion
+      if (consoleErrors.length > 0) {
+        console.warn('Console errors detected:', consoleErrors);
+      }
     }
   },
 

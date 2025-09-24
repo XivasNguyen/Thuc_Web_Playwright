@@ -43,6 +43,9 @@ export default defineConfig({
     }],
     ['json', { outputFile: 'test-results/results.json' }],
     ['junit', { outputFile: 'test-results/junit.xml' }],
+    ['./src/reporters/CustomHtmlReporter.ts', {
+      outputDir: 'test-results'
+    }],
     ['line'],
   ],
 
