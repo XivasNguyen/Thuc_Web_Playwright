@@ -1,14 +1,36 @@
 {
   "name": "thuc_web_playwright",
   "version": "1.0.0",
-  "description": "",
+  "description": "Production-ready Playwright test automation framework for nopCommerce demo store",
   "main": "index.js",
-  "scripts": {},
-  "keywords": [],
-  "author": "",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "test:report": "npx playwright show-report",
+    "test:dev": "npx playwright test --config=playwright.dev.config.ts",
+    "test:staging": "npx playwright test --config=playwright.staging.config.ts",
+    "test:prod": "npx playwright test --config=playwright.prod.config.ts",
+    "test:parallel": "npx playwright test --workers=4",
+    "test:chrome": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:safari": "npx playwright test --project=webkit",
+    "test:mobile": "npx playwright test --project='Mobile Chrome'",
+    "install:browsers": "npx playwright install",
+    "lint": "eslint tests/ --ext .ts",
+    "format": "prettier --write tests/"
+  },
+  "keywords": ["playwright", "automation", "testing", "e2e", "nopcommerce"],
+  "author": "Test Automation Team",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.55.1",
-    "@types/node": "^24.5.2"
+    "@types/node": "^24.5.2",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.0.0",
+    "prettier": "^3.3.0"
   }
 }

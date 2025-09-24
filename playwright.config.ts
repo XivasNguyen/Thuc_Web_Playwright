@@ -1,79 +1,115 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+import { getEnvironment } from './src/config/environments';
+
+// Load environment variables
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+const environment = getEnvironment(process.env.NODE_ENV || 'dev');
 
 /**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
-
-/**
+ * Enhanced Playwright configuration with comprehensive settings
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   testDir: './tests',
+
+  /* Global test timeout */
+  timeout: environment.timeout,
+
+  /* Expect timeout for assertions */
+  expect: {
+    timeout: 10000,
+  },
+
   /* Run tests in files in parallel */
   fullyParallel: true,
+
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://localhost:3000',
 
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+  /* Retry on CI only */
+  retries: process.env.CI ? environment.retries : 1,
+
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : environment.workers,
+
+  /* Reporter to use */
+  reporter: [
+    ['html', {
+      outputFolder: 'test-results/html-report',
+      open: process.env.REPORT_OPEN === 'true' ? 'always' : 'never'
+    }],
+    ['json', { outputFile: 'test-results/results.json' }],
+    ['junit', { outputFile: 'test-results/junit.xml' }],
+    ['line'],
+  ],
+
+  /* Output directory for test artifacts */
+  outputDir: 'test-results/artifacts',
+
+  /* Shared settings for all projects */
+  use: {
+    /* Base URL */
+    baseURL: environment.baseUrl,
+
+    /* Browser context options */
+    viewport: { width: 1280, height: 720 },
+    ignoreHTTPSErrors: true,
+
+    /* Collect trace when retrying the failed test */
+    trace: process.env.TRACE_MODE as any || 'on-first-retry',
+
+    /* Record video */
+    video: process.env.VIDEO_MODE as any || 'retain-on-failure',
+
+    /* Take screenshot */
+    screenshot: process.env.SCREENSHOT_MODE as any || 'only-on-failure',
+
+    /* Navigation timeout */
+    navigationTimeout: 60000,
+
+    /* Action timeout */
+    actionTimeout: 30000,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: environment.headless,
+      },
     },
-
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        headless: environment.headless,
+      },
     },
-
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: {
+        ...devices['Desktop Safari'],
+        headless: environment.headless,
+      },
     },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    {
+      name: 'Mobile Chrome',
+      use: {
+        ...devices['Pixel 5'],
+        headless: environment.headless,
+      },
+    },
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 12'],
+        headless: environment.headless,
+      },
+    },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
