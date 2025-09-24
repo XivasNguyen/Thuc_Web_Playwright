@@ -13,9 +13,7 @@ A comprehensive, production-ready test automation framework built with **Playwri
 - **Automatic failure handling** with screenshots, traces, and logs
 - **CI/CD integration** with GitHub Actions
 - **Data-driven testing** with test data factories
-- **Performance monitoring** and metrics collection
 - **Mobile testing support** with device emulation
-- **API testing capabilities** for end-to-end validation
 
 ## 🎯 Recent Improvements
 
@@ -26,6 +24,7 @@ A comprehensive, production-ready test automation framework built with **Playwri
 - **ESLint Configuration Migration**: Migrated from deprecated `.eslintrc.js` to modern `eslint.config.js` format (ESLint v9)
 - **TypeScript Lint Fixes**: Resolved 47 critical ESLint errors including unused parameters, duplicate methods, and empty object patterns
 - **Code Quality Improvements**: Fixed unused imports, added proper parameter prefixing for unused variables, and improved type safety
+- **Framework Simplification**: Removed performance monitoring and API testing functionality to focus on core UI testing capabilities
 
 ## 🏗️ Framework Architecture
 
@@ -133,9 +132,6 @@ npm run test:regression
 
 # Run mobile tests
 npm run test:mobile
-
-# Run performance tests
-npm run test:performance
 ```
 
 ## 📋 Test Scenarios
@@ -234,7 +230,6 @@ The framework provides multiple reporting options:
 ### 2. Custom HTML Report
 - Enhanced visual design
 - Test execution summary with metrics
-- Performance indicators
 - Failure analysis with artifacts
 
 ### 3. JSON Report
@@ -368,7 +363,7 @@ test('should register user with valid data', async ({ page }) => {
    - Use meaningful assertion messages
    - Implement custom matchers when needed
    - Verify both positive and negative scenarios
-   - Include performance assertions where relevant
+
 
 4. **Error Handling**
    - Implement retry mechanisms for flaky tests
@@ -414,27 +409,7 @@ npm run test:trace
 - **Flaky tests**: Implement proper synchronization
 - **Environment issues**: Verify configuration and connectivity
 
-## 📈 Performance Monitoring
 
-The framework includes performance monitoring capabilities:
-
-### Metrics Collected
-
-- **Page load times**
-- **First contentful paint**
-- **Largest contentful paint**
-- **Network request counts**
-- **JavaScript execution time**
-
-### Performance Tests
-
-```bash
-# Run performance-focused tests
-npm run test:performance
-
-# Generate performance report
-npm run report:performance
-```
 
 ## 🤝 Contributing
 

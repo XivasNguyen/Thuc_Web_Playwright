@@ -220,7 +220,7 @@ export class ReportUtils {
       testFile: testInfo.file,
       status: testInfo.status,
       duration: testInfo.duration,
-      startTime: testInfo.startTime,
+      startTime: new Date(Date.now() - testInfo.duration),
       endTime: new Date(),
       retry: testInfo.retry,
       workerIndex: testInfo.workerIndex,
@@ -231,7 +231,6 @@ export class ReportUtils {
       errors: testInfo.errors.map(error => ({
         message: error.message,
         stack: error.stack,
-        location: error.location,
       })),
       attachments: testInfo.attachments.map(attachment => ({
         name: attachment.name,
@@ -257,42 +256,7 @@ export class ReportUtils {
     console.log(`📊 Test summary saved: ${summaryPath}`);
   }
 
-  /**
-   * Capture page performance metrics
-   */
-  static async capturePerformanceMetrics(page: Page, testInfo: TestInfo): Promise<any> {
-    try {
-      const metrics = await page.evaluate(() => {
-        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-        const paint = performance.getEntriesByType('paint');
-        
-        return {
-          navigationStart: navigation.navigationStart,
-          domContentLoaded: navigation.domContentLoadedEventEnd - navigation.navigationStart,
-          loadComplete: navigation.loadEventEnd - navigation.navigationStart,
-          firstPaint: paint.find(p => p.name === 'first-paint')?.startTime || 0,
-          firstContentfulPaint: paint.find(p => p.name === 'first-contentful-paint')?.startTime || 0,
-          domInteractive: navigation.domInteractive - navigation.navigationStart,
-          domComplete: navigation.domComplete - navigation.navigationStart,
-        };
-      });
 
-      const timestamp = TestUtils.getCurrentTimestamp();
-      const testName = testInfo.title.replace(/[^a-zA-Z0-9]/g, '-');
-      const metricsPath = path.join(
-        ReportUtils.LOGS_DIR,
-        `performance-${testName}-${timestamp}.json`
-      );
-
-      fs.writeFileSync(metricsPath, JSON.stringify(metrics, null, 2));
-      console.log(`⚡ Performance metrics saved: ${metricsPath}`);
-      
-      return metrics;
-    } catch (error) {
-      console.warn(`⚠️ Failed to capture performance metrics: ${error}`);
-      return null;
-    }
-  }
 
   /**
    * Capture browser information
@@ -341,9 +305,6 @@ export class ReportUtils {
       // Capture trace
       const tracePath = await ReportUtils.captureFailureTrace(page, testInfo);
 
-      // Capture performance metrics
-      const performanceMetrics = await ReportUtils.capturePerformanceMetrics(page, testInfo);
-
       // Capture browser info
       const browserInfo = await ReportUtils.captureBrowserInfo(page);
 
@@ -360,7 +321,6 @@ export class ReportUtils {
           trace: tracePath,
         },
         browserInfo,
-        performanceMetrics,
         timestamp: new Date().toISOString(),
       };
 

@@ -111,14 +111,14 @@ export const test = base.extend<TestFixtures>({
   /**
    * Test data factory fixture
    */
-  testDataFactory: async (_fixtures, use) => {
+  testDataFactory: async ({}, use) => {
     await use(TestDataFactory);
   },
 
   /**
    * Test utils fixture
    */
-  testUtils: async (_fixtures, use) => {
+  testUtils: async ({}, use) => {
     await use(TestUtils);
   },
 });
@@ -190,80 +190,13 @@ export const mobileTest = test.extend<TestFixtures>({
   },
 });
 
-/**
- * Performance test fixture with performance monitoring
- */
-export const performanceTest = test.extend<TestFixtures & { performanceMetrics: any }>({
-  performanceMetrics: async ({ page }, use) => {
-    const metrics = {
-      navigationStart: 0,
-      loadComplete: 0,
-      firstContentfulPaint: 0,
-      largestContentfulPaint: 0,
-      networkRequests: [] as any[],
-    };
 
-    // Track network requests
-    page.on('request', request => {
-      metrics.networkRequests.push({
-        url: request.url(),
-        method: request.method(),
-        timestamp: Date.now(),
-      });
-    });
-
-    // Measure performance metrics
-    await page.addInitScript(() => {
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-          const paint = performance.getEntriesByType('paint');
-          
-          (window as any).performanceMetrics = {
-            navigationStart: navigation.navigationStart,
-            loadComplete: navigation.loadEventEnd,
-            firstContentfulPaint: paint.find(p => p.name === 'first-contentful-paint')?.startTime || 0,
-          };
-        }, 1000);
-      });
-    });
-
-    await use(metrics);
-
-    // Log performance metrics after test
-    const pageMetrics = await page.evaluate(() => (window as any).performanceMetrics);
-    if (pageMetrics) {
-      console.log('Performance Metrics:', {
-        ...pageMetrics,
-        networkRequestCount: metrics.networkRequests.length,
-      });
-    }
-  },
-});
-
-/**
- * API test fixture for tests that need to interact with APIs
- */
-export const apiTest = test.extend<TestFixtures & { apiContext: any }>({
-  apiContext: async ({ playwright }, use) => {
-    const apiContext = await playwright.request.newContext({
-      baseURL: 'https://demo.nopcommerce.com',
-      extraHTTPHeaders: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    await use(apiContext);
-    await apiContext.dispose();
-  },
-});
 
 /**
  * Database test fixture (if database access is needed)
  */
 export const databaseTest = test.extend<TestFixtures & { dbConnection: any }>({
-  dbConnection: async (_fixtures, use) => {
+  dbConnection: async ({}, use) => {
     // Mock database connection for demo purposes
     const mockDb = {
       query: async (sql: string) => {

@@ -43,6 +43,7 @@ module.exports = [
       'no-var': 'error',
       'no-console': 'off', // Allow console in test framework
       'no-undef': 'off', // TypeScript handles this
+      'no-empty-pattern': 'off', // Allow empty object patterns in Playwright fixtures
       'no-unused-vars': 'off', // Use TypeScript version instead
     },
   },
