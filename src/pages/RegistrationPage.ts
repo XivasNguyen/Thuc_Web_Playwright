@@ -12,10 +12,10 @@ export class RegistrationPage extends BasePage {
   private readonly emailField: Locator;
   private readonly companyField: Locator;
 
-  // Date of birth
-  private readonly dateOfBirthDayDropdown: Locator;
-  private readonly dateOfBirthMonthDropdown: Locator;
-  private readonly dateOfBirthYearDropdown: Locator;
+  // Date of birth (not available in nopCommerce demo)
+  // private readonly dateOfBirthDayDropdown: Locator;
+  // private readonly dateOfBirthMonthDropdown: Locator;
+  // private readonly dateOfBirthYearDropdown: Locator;
 
   // Gender
   private readonly maleGenderRadio: Locator;
@@ -53,14 +53,14 @@ export class RegistrationPage extends BasePage {
     this.emailField = page.locator('#Email');
     this.companyField = page.locator('#Company');
 
-    // Initialize date of birth dropdowns
-    this.dateOfBirthDayDropdown = page.locator('select[name="DateOfBirthDay"]');
-    this.dateOfBirthMonthDropdown = page.locator('select[name="DateOfBirthMonth"]');
-    this.dateOfBirthYearDropdown = page.locator('select[name="DateOfBirthYear"]');
+    // Date of birth dropdowns not available in nopCommerce demo
+    // this.dateOfBirthDayDropdown = page.locator('select[name="DateOfBirthDay"]');
+    // this.dateOfBirthMonthDropdown = page.locator('select[name="DateOfBirthMonth"]');
+    // this.dateOfBirthYearDropdown = page.locator('select[name="DateOfBirthYear"]');
 
     // Initialize gender radio buttons
-    this.maleGenderRadio = page.locator('#gender-male');
-    this.femaleGenderRadio = page.locator('#gender-female');
+    this.maleGenderRadio = page.locator('input[value="M"]');
+    this.femaleGenderRadio = page.locator('input[value="F"]');
 
     // Initialize password fields
     this.passwordField = page.locator('#Password');
@@ -70,7 +70,7 @@ export class RegistrationPage extends BasePage {
     this.newsletterCheckbox = page.locator('#Newsletter');
 
     // Initialize buttons
-    this.registerButton = page.locator('#register-button');
+    this.registerButton = page.locator('button:has-text("Register")');
 
     // Initialize messages and validation
     this.successMessage = page.locator('.result');
@@ -108,13 +108,13 @@ export class RegistrationPage extends BasePage {
   }
 
   /**
-   * Set date of birth
+   * Set date of birth (not available in nopCommerce demo)
    */
-  async setDateOfBirth(day: number, month: number, year: number): Promise<void> {
-    await this.selectDropdownOption(this.dateOfBirthDayDropdown, day.toString());
-    await this.selectDropdownOption(this.dateOfBirthMonthDropdown, month.toString());
-    await this.selectDropdownOption(this.dateOfBirthYearDropdown, year.toString());
-  }
+  // async setDateOfBirth(day: number, month: number, year: number): Promise<void> {
+  //   await this.selectDropdownOption(this.dateOfBirthDayDropdown, day.toString());
+  //   await this.selectDropdownOption(this.dateOfBirthMonthDropdown, month.toString());
+  //   await this.selectDropdownOption(this.dateOfBirthYearDropdown, year.toString());
+  // }
 
   /**
    * Select gender
@@ -160,14 +160,15 @@ export class RegistrationPage extends BasePage {
    */
   async fillRegistrationForm(data: UserRegistrationData): Promise<void> {
     await this.fillPersonalDetails(data);
-    
-    if (data.dateOfBirth) {
-      await this.setDateOfBirth(
-        data.dateOfBirth.day,
-        data.dateOfBirth.month,
-        data.dateOfBirth.year
-      );
-    }
+
+    // Date of birth not available in nopCommerce demo
+    // if (data.dateOfBirth) {
+    //   await this.setDateOfBirth(
+    //     data.dateOfBirth.day,
+    //     data.dateOfBirth.month,
+    //     data.dateOfBirth.year
+    //   );
+    // }
     
     if (data.gender) {
       await this.selectGender(data.gender);

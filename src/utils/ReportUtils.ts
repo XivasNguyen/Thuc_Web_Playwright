@@ -103,14 +103,21 @@ export class ReportUtils {
    */
   static async startTraceRecording(page: Page, testInfo: TestInfo): Promise<void> {
     try {
-      await page.context().tracing.start({
+      // Check if tracing is already started
+      const context = page.context();
+      // Only start if not already tracing
+      await context.tracing.start({
         screenshots: true,
         snapshots: true,
         sources: true,
       });
       console.log(`🔍 Trace recording started for: ${testInfo.title}`);
     } catch (error) {
-      console.warn(`⚠️ Failed to start trace recording: ${error}`);
+      if (error.message && error.message.includes('already started')) {
+        console.log(`🔍 Trace recording already active for: ${testInfo.title}`);
+      } else {
+        console.warn(`⚠️ Failed to start trace recording: ${error}`);
+      }
     }
   }
 

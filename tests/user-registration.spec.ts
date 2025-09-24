@@ -1,6 +1,7 @@
 import { test, expect } from '../src/fixtures/TestFixtures';
 import { RegistrationPage } from '../src/pages/RegistrationPage';
 import { TestDataProvider } from '../src/data/TestDataProvider';
+import { TestDataFactory } from '../src/data/TestDataFactory';
 import { TestUtils } from '../src/utils/TestUtils';
 
 test.describe('User Registration Flow', () => {
@@ -31,7 +32,11 @@ test.describe('User Registration Flow', () => {
 
     test('should successfully register with special characters in name', async () => {
       // Arrange
-      const testData = TestDataProvider.getTestData('valid_registration', 'Registration with Special Characters');
+      const testData = TestDataFactory.createValidUserRegistrationData();
+      // Override with special characters for this test
+      testData.firstName = "O'Connor";
+      testData.lastName = 'Smith-Jones';
+      testData.company = 'O\'Connor & Associates';
       TestUtils.logStep(`Registering user with special characters: ${testData.email}`);
 
       // Act
@@ -44,7 +49,11 @@ test.describe('User Registration Flow', () => {
 
     test('should successfully register with long names', async () => {
       // Arrange
-      const testData = TestDataProvider.getTestData('valid_registration', 'Registration with Long Names');
+      const testData = TestDataFactory.createValidUserRegistrationData();
+      // Override with long names for this test
+      testData.firstName = 'Bartholomew';
+      testData.lastName = 'Constantinopolous';
+      testData.company = 'Bartholomew Constantinopolous International Corporation';
       TestUtils.logStep(`Registering user with long names: ${testData.email}`);
 
       // Act
@@ -87,7 +96,7 @@ test.describe('User Registration Flow', () => {
   test.describe('Invalid Registration Scenarios', () => {
     test('should show validation error for invalid email format', async () => {
       // Arrange
-      const testData = TestDataProvider.getTestData('invalid_registration', 'Invalid Email Format');
+      const testData = TestDataFactory.createInvalidEmailRegistrationData();
       TestUtils.logStep(`Testing invalid email format: ${testData.email}`);
 
       // Act
@@ -100,7 +109,7 @@ test.describe('User Registration Flow', () => {
 
     test('should show validation error for password mismatch', async () => {
       // Arrange
-      const testData = TestDataProvider.getTestData('invalid_registration', 'Password Mismatch');
+      const testData = TestDataFactory.createMismatchedPasswordRegistrationData();
       TestUtils.logStep('Testing password mismatch validation');
 
       // Act
@@ -113,7 +122,7 @@ test.describe('User Registration Flow', () => {
 
     test('should show validation error for weak password', async () => {
       // Arrange
-      const testData = TestDataProvider.getTestData('invalid_registration', 'Weak Password');
+      const testData = TestDataFactory.createWeakPasswordRegistrationData();
       TestUtils.logStep('Testing weak password validation');
 
       // Act
@@ -126,7 +135,7 @@ test.describe('User Registration Flow', () => {
 
     test('should show validation errors for empty required fields', async () => {
       // Arrange
-      const testData = TestDataProvider.getTestData('invalid_registration', 'Empty Required Fields');
+      const testData = TestDataFactory.createEmptyFieldsRegistrationData();
       TestUtils.logStep('Testing empty required fields validation');
 
       // Act
