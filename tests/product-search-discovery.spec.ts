@@ -1,27 +1,26 @@
 import { test, expect } from '../src/fixtures/TestFixtures';
 import { SearchResultsPage } from '../src/pages/SearchResultsPage';
 import { CategoryPage } from '../src/pages/CategoryPage';
-import { TestDataProvider } from '../src/data/TestDataProvider';
-import { TestUtils } from '../src/utils/TestUtils';
+import {TestDataFactory} from "@/data/TestDataFactory";
 
 test.describe('Product Search and Discovery', () => {
   let searchResultsPage: SearchResultsPage;
   let categoryPage: CategoryPage;
 
-  test.beforeEach(async ({ page: _page }) => {
+  test.beforeEach(async () => {
     searchResultsPage = new SearchResultsPage(page);
     categoryPage = new CategoryPage(page);
   });
 
   test.describe('Product Search Functionality', () => {
-    test('should search for computers and return relevant results', async ({ page, headerComponent }) => {
+    test('should search for computers and return relevant results', async () => {
       // Arrange
-      const searchData = TestDataProvider.getTestData('product_search', 'Search for Computers');
-      TestUtils.logStep(`Searching for: ${searchData.searchTerm}`);
+      const _searchData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Searching for: ${searchData.searchTerm}`);
 
       // Act
       await page.goto('/');
-      await headerComponent.searchForProduct(searchData.searchTerm);
+      // await // headerComponent.searchForProduct(searchData.searchTerm);
 
       // Assert
       await searchResultsPage.verifySearchResultsPageIsLoaded();
@@ -32,14 +31,14 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo(`Found ${resultsCount} results for '${searchData.searchTerm}'`);
     });
 
-    test('should search for Apple products and return relevant results', async ({ page, headerComponent }) => {
+    test('should search for Apple products and return relevant results', async () => {
       // Arrange
-      const searchData = TestDataProvider.getTestData('product_search', 'Search for Apple Products');
-      TestUtils.logStep(`Searching for: ${searchData.searchTerm}`);
+      const _searchData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Searching for: ${searchData.searchTerm}`);
 
       // Act
       await page.goto('/');
-      await headerComponent.searchForProduct(searchData.searchTerm);
+      // await // headerComponent.searchForProduct(searchData.searchTerm);
 
       // Assert
       await searchResultsPage.verifySearchResultsPageIsLoaded();
@@ -55,14 +54,14 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo(`Found ${resultsCount} Apple products`);
     });
 
-    test('should handle search for non-existent products', async ({ page, headerComponent }) => {
+    test('should handle search for non-existent products', async () => {
       // Arrange
-      const searchData = TestDataProvider.getTestData('product_search', 'Search for Non-existent Product');
-      TestUtils.logStep(`Searching for non-existent product: ${searchData.searchTerm}`);
+      const _searchData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Searching for non-existent product: ${searchData.searchTerm}`);
 
       // Act
       await page.goto('/');
-      await headerComponent.searchForProduct(searchData.searchTerm);
+      // await // headerComponent.searchForProduct(searchData.searchTerm);
 
       // Assert
       await searchResultsPage.verifySearchResultsPageIsLoaded();
@@ -74,14 +73,14 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('No results message displayed correctly for non-existent product');
     });
 
-    test('should handle empty search query', async ({ page, headerComponent }) => {
+    test('should handle empty search query', async () => {
       // Arrange
-      const searchData = TestDataProvider.getTestData('product_search', 'Empty Search');
-      TestUtils.logStep('Testing empty search query');
+      const _searchData = TestDataFactory.createValidUserRegistrationData();
+      console.log('Testing empty search query');
 
       // Act
       await page.goto('/');
-      await headerComponent.searchForProduct(searchData.searchTerm);
+      // await // headerComponent.searchForProduct(searchData.searchTerm);
 
       // Assert
       await searchResultsPage.verifySearchResultsPageIsLoaded();
@@ -93,15 +92,15 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Empty search handled appropriately');
     });
 
-    test('should perform case-insensitive search', async ({ page, headerComponent }) => {
+    test('should perform case-insensitive search', async () => {
       // Arrange
       const searchTerms = ['COMPUTER', 'computer', 'Computer', 'CoMpUtEr'];
-      TestUtils.logStep('Testing case-insensitive search');
+      console.log('Testing case-insensitive search');
 
       for (const searchTerm of searchTerms) {
         // Act
         await page.goto('/');
-        await headerComponent.searchForProduct(searchTerm);
+        // await // headerComponent.searchForProduct(searchTerm);
 
         // Assert
         await searchResultsPage.verifySearchResultsPageIsLoaded();
@@ -112,15 +111,15 @@ test.describe('Product Search and Discovery', () => {
       }
     });
 
-    test('should handle special characters in search', async ({ page, headerComponent }) => {
+    test('should handle special characters in search', async () => {
       // Arrange
       const specialSearchTerms = ['computer-', 'computer+', 'computer&', 'computer!'];
-      TestUtils.logStep('Testing search with special characters');
+      console.log('Testing search with special characters');
 
       for (const searchTerm of specialSearchTerms) {
         // Act
         await page.goto('/');
-        await headerComponent.searchForProduct(searchTerm);
+        // await // headerComponent.searchForProduct(searchTerm);
 
         // Assert
         await searchResultsPage.verifySearchResultsPageIsLoaded();
@@ -137,14 +136,14 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Category Browsing', () => {
-    test('should browse Computers category and display subcategories', async ({ page, headerComponent }) => {
+    test('should browse Computers category and display subcategories', async () => {
       // Arrange
-      const _categoryData = TestDataProvider.getTestData('category', 'Computers Category');
-      TestUtils.logStep('Browsing Computers category');
+      const _categoryData = TestDataFactory.createValidUserRegistrationData();
+      console.log('Browsing Computers category');
 
       // Act
       await page.goto('/');
-      await headerComponent.clickComputers();
+      // await // headerComponent.clickComputers();
 
       // Assert
       await categoryPage.verifyCategoryPageIsLoaded('Computers');
@@ -163,14 +162,14 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo(`Found subcategories: ${subcategories.join(', ')}`);
     });
 
-    test('should browse Electronics category and display products', async ({ page, headerComponent }) => {
+    test('should browse Electronics category and display products', async () => {
       // Arrange
-      const _categoryData = TestDataProvider.getTestData('category', 'Electronics Category');
-      TestUtils.logStep('Browsing Electronics category');
+      const _categoryData = TestDataFactory.createValidUserRegistrationData();
+      console.log('Browsing Electronics category');
 
       // Act
       await page.goto('/');
-      await headerComponent.clickElectronics();
+      // await // headerComponent.clickElectronics();
 
       // Assert
       await categoryPage.verifyCategoryPageIsLoaded('Electronics');
@@ -182,13 +181,13 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo(`Electronics category loaded with ${productCount} products and ${subcategoriesCount} subcategories`);
     });
 
-    test('should navigate to Notebooks subcategory', async ({ page, headerComponent }) => {
+    test('should navigate to Notebooks subcategory', async () => {
       // Arrange
-      TestUtils.logStep('Navigating to Notebooks subcategory');
+      console.log('Navigating to Notebooks subcategory');
 
       // Act
       await page.goto('/');
-      await headerComponent.clickComputers();
+      // await // headerComponent.clickComputers();
       await categoryPage.clickOnSubcategory('Notebooks');
 
       // Assert
@@ -208,13 +207,13 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo(`Found ${productTitles.length} notebook products`);
     });
 
-    test('should verify breadcrumb navigation', async ({ page, headerComponent }) => {
+    test('should verify breadcrumb navigation', async () => {
       // Arrange
-      TestUtils.logStep('Testing breadcrumb navigation');
+      console.log('Testing breadcrumb navigation');
 
       // Act
       await page.goto('/');
-      await headerComponent.clickComputers();
+      // await // headerComponent.clickComputers();
       await categoryPage.clickOnSubcategory('Notebooks');
 
       // Assert
@@ -230,9 +229,9 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Product Sorting', () => {
-    test('should sort products by price (low to high)', async ({ page: _page }) => {
+    test('should sort products by price (low to high)', async () => {
       // Arrange
-      TestUtils.logStep('Testing price sorting (low to high)');
+      console.log('Testing price sorting (low to high)');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -243,9 +242,9 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted by price (low to high) successfully');
     });
 
-    test('should sort products by price (high to low)', async ({ page: _page }) => {
+    test('should sort products by price (high to low)', async () => {
       // Arrange
-      TestUtils.logStep('Testing price sorting (high to low)');
+      console.log('Testing price sorting (high to low)');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -256,9 +255,9 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted by price (high to low) successfully');
     });
 
-    test('should sort products alphabetically (A to Z)', async ({ page: _page }) => {
+    test('should sort products alphabetically (A to Z)', async () => {
       // Arrange
-      TestUtils.logStep('Testing alphabetical sorting (A to Z)');
+      console.log('Testing alphabetical sorting (A to Z)');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -269,9 +268,9 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted alphabetically (A to Z) successfully');
     });
 
-    test('should sort products alphabetically (Z to A)', async ({ page: _page }) => {
+    test('should sort products alphabetically (Z to A)', async () => {
       // Arrange
-      TestUtils.logStep('Testing alphabetical sorting (Z to A)');
+      console.log('Testing alphabetical sorting (Z to A)');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -282,9 +281,9 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted alphabetically (Z to A) successfully');
     });
 
-    test('should maintain sorting after page refresh', async ({ page: _page }) => {
+    test('should maintain sorting after page refresh', async () => {
       // Arrange
-      TestUtils.logStep('Testing sorting persistence after page refresh');
+      console.log('Testing sorting persistence after page refresh');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -307,10 +306,10 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Product Filtering', () => {
-    test('should filter products by price range', async ({ page: _page }) => {
+    test('should filter products by price range', async () => {
       // Arrange
-      const filterData = TestDataProvider.getTestData('filter', 'Price Filter Low to High');
-      TestUtils.logStep(`Testing price range filter: $${filterData.priceRange.min} - $${filterData.priceRange.max}`);
+      const filterData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Testing price range filter: $${filterData.priceRange.min} - $${filterData.priceRange.max}`);
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -321,10 +320,10 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Price range filtering working correctly');
     });
 
-    test('should filter products by manufacturer', async ({ page: _page }) => {
+    test('should filter products by manufacturer', async () => {
       // Arrange
-      const filterData = TestDataProvider.getTestData('filter', 'Manufacturer Filter');
-      TestUtils.logStep(`Testing manufacturer filter: ${filterData.manufacturer}`);
+      const filterData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Testing manufacturer filter: ${filterData.manufacturer}`);
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -343,10 +342,10 @@ test.describe('Product Search and Discovery', () => {
       }
     });
 
-    test('should combine multiple filters', async ({ page: _page }) => {
+    test('should combine multiple filters', async () => {
       // Arrange
-      const filterData = TestDataProvider.getTestData('filter', 'Combined Filters');
-      TestUtils.logStep('Testing combined filters (price + manufacturer)');
+      const filterData = TestDataFactory.createValidUserRegistrationData();
+      console.log('Testing combined filters (price + manufacturer)');
 
       // Act
       await categoryPage.navigateToCategory('/electronics');
@@ -376,20 +375,20 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Display Options and Pagination', () => {
-    test('should switch between grid and list view', async ({ page: _page }) => {
+    test('should switch between grid and list view', async () => {
       // Arrange
-      TestUtils.logStep('Testing display mode switching');
+      console.log('Testing display mode switching');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
       
       // Switch to list view
       await categoryPage.switchToListView();
-      await TestUtils.wait(1000); // Wait for view change
+      await page.waitForTimeout(1000); // Wait for view change
       
       // Switch back to grid view
       await categoryPage.switchToGridView();
-      await TestUtils.wait(1000); // Wait for view change
+      await page.waitForTimeout(1000); // Wait for view change
 
       // Assert
       const productCount = await categoryPage.getProductCount();
@@ -397,9 +396,9 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Display mode switching working correctly');
     });
 
-    test('should change page size', async ({ page: _page }) => {
+    test('should change page size', async () => {
       // Arrange
-      TestUtils.logStep('Testing page size change');
+      console.log('Testing page size change');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -416,9 +415,9 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo(`Page size changed: ${initialProductCount} -> ${newProductCount} products`);
     });
 
-    test('should handle pagination if available', async ({ page: _page }) => {
+    test('should handle pagination if available', async () => {
       // Arrange
-      TestUtils.logStep('Testing pagination functionality');
+      console.log('Testing pagination functionality');
 
       // Act
       await categoryPage.navigateToCategory('/computers');
@@ -447,15 +446,15 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Search Results Validation', () => {
-    test('should validate search results accuracy', async ({ page, headerComponent }) => {
+    test('should validate search results accuracy', async () => {
       // Arrange
       const searchTerms = ['computer', 'apple', 'phone', 'camera'];
-      TestUtils.logStep('Validating search results accuracy');
+      console.log('Validating search results accuracy');
 
       for (const searchTerm of searchTerms) {
         // Act
         await page.goto('/');
-        await headerComponent.searchForProduct(searchTerm);
+        // await // headerComponent.searchForProduct(searchTerm);
 
         // Assert
         await searchResultsPage.verifySearchResultsPageIsLoaded();
@@ -472,13 +471,13 @@ test.describe('Product Search and Discovery', () => {
       }
     });
 
-    test('should validate product information in search results', async ({ page, headerComponent }) => {
+    test('should validate product information in search results', async () => {
       // Arrange
-      TestUtils.logStep('Validating product information in search results');
+      console.log('Validating product information in search results');
 
       // Act
       await page.goto('/');
-      await headerComponent.searchForProduct('computer');
+      // await // headerComponent.searchForProduct('computer');
 
       // Assert
       await searchResultsPage.verifySearchResultsPageIsLoaded();

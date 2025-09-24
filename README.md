@@ -2,18 +2,15 @@
 
 A comprehensive, production-ready test automation framework built with **Playwright** and **TypeScript** for testing the nopCommerce demo store. This framework implements industry best practices including Page Object Model (POM), data-driven testing, comprehensive reporting, and CI/CD integration.
 
-## 🌟 Features
+## 🌟 Core Features
 
-- **Page Object Model (POM)** architecture for maintainable test code
-- **TypeScript** for type safety and better IDE support
-- **Multi-environment support** (dev, staging, production)
-- **Cross-browser testing** (Chromium, Firefox, WebKit)
-- **Parallel test execution** for faster feedback
-- **Comprehensive reporting** with HTML, JSON, JUnit, and custom reports
-- **Automatic failure handling** with screenshots, traces, and logs
-- **CI/CD integration** with GitHub Actions
-- **Data-driven testing** with test data factories
-- **Mobile testing support** with device emulation
+- **Page Object Model (POM)** - Clean, maintainable test architecture with base page classes
+- **HTML Report Generation** - Comprehensive test reports with pass/fail status and execution summary
+- **Failure Artifacts** - Automatic screenshots, traces, and console logs on test failures
+- **Environment Configuration** - Support for multiple environments (dev, staging, prod)
+- **Cloud Execution Support** - Ready for cloud-based test execution
+- **CI/CD Integration** - GitHub Actions workflow included
+- **Parallel Test Execution** - Fast test execution with configurable workers
 
 ## 🎯 Recent Improvements
 
@@ -25,6 +22,7 @@ A comprehensive, production-ready test automation framework built with **Playwri
 - **TypeScript Lint Fixes**: Resolved 47 critical ESLint errors including unused parameters, duplicate methods, and empty object patterns
 - **Code Quality Improvements**: Fixed unused imports, added proper parameter prefixing for unused variables, and improved type safety
 - **Framework Simplification**: Removed performance monitoring and API testing functionality to focus on core UI testing capabilities
+- **Core Requirements Focus**: Streamlined framework to include only the 7 essential requirements: POM, HTML reporting, failure artifacts, environment config, cloud execution, CI/CD, and parallel execution
 
 ## 🏗️ Framework Architecture
 

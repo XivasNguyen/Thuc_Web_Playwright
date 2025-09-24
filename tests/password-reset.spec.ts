@@ -1,22 +1,20 @@
 import { test, expect } from '../src/fixtures/TestFixtures';
 import { PasswordResetPage } from '../src/pages/PasswordResetPage';
 import { LoginPage } from '../src/pages/LoginPage';
-import { TestDataProvider } from '../src/data/TestDataProvider';
-import { TestUtils } from '../src/utils/TestUtils';
 
 test.describe('Password Reset Workflow', () => {
   let passwordResetPage: PasswordResetPage;
   let loginPage: LoginPage;
 
-  test.beforeEach(async ({ page: _page }) => {
+  test.beforeEach(async () => {
     passwordResetPage = new PasswordResetPage(page);
     loginPage = new LoginPage(page);
   });
 
   test.describe('Password Recovery Page Access', () => {
-    test('should navigate to password recovery page from login page', async ({ page: _page }) => {
+    test('should navigate to password recovery page from login page', async () => {
       // Arrange
-      TestUtils.logStep('Navigating to login page and accessing password recovery');
+      console.log('Navigating to login page and accessing password recovery');
 
       // Act
       await loginPage.navigateToLoginPage();
@@ -28,9 +26,9 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Successfully navigated to password recovery page from login');
     });
 
-    test('should navigate directly to password recovery page', async ({ page: _page }) => {
+    test('should navigate directly to password recovery page', async () => {
       // Arrange
-      TestUtils.logStep('Navigating directly to password recovery page');
+      console.log('Navigating directly to password recovery page');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -40,9 +38,9 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Successfully accessed password recovery page directly');
     });
 
-    test('should display correct page elements and content', async ({ page: _page }) => {
+    test('should display correct page elements and content', async () => {
       // Arrange
-      TestUtils.logStep('Verifying password recovery page elements');
+      console.log('Verifying password recovery page elements');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -59,10 +57,10 @@ test.describe('Password Reset Workflow', () => {
   });
 
   test.describe('Valid Password Recovery Requests', () => {
-    test('should successfully submit password recovery for valid email', async ({ page: _page }) => {
+    test('should successfully submit password recovery for valid email', async () => {
       // Arrange
-      const _testData = TestDataProvider.getTestData('password_reset', 'Valid Email Reset');
-      TestUtils.logStep(`Submitting password recovery for valid email: ${testData.email}`);
+      const _testData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Submitting password recovery for valid email: ${testData.email}`);
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -76,10 +74,10 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Password recovery request submitted successfully');
     });
 
-    test('should handle password recovery for non-existent email gracefully', async ({ page: _page }) => {
+    test('should handle password recovery for non-existent email gracefully', async () => {
       // Arrange
-      const _testData = TestDataProvider.getTestData('password_reset', 'Invalid Email Reset');
-      TestUtils.logStep(`Submitting password recovery for non-existent email: ${testData.email}`);
+      const _testData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Submitting password recovery for non-existent email: ${testData.email}`);
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -94,10 +92,10 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Non-existent email handled gracefully with generic success message');
     });
 
-    test('should submit form using Enter key', async ({ page: _page }) => {
+    test('should submit form using Enter key', async () => {
       // Arrange
       const validEmail = 'test.user@example.com';
-      TestUtils.logStep('Testing form submission with Enter key');
+      console.log('Testing form submission with Enter key');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -108,7 +106,7 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Form submission with Enter key working correctly');
     });
 
-    test('should handle various valid email formats', async ({ page: _page }) => {
+    test('should handle various valid email formats', async () => {
       // Arrange
       const validEmails = [
         'user@example.com',
@@ -118,7 +116,7 @@ test.describe('Password Reset Workflow', () => {
         'user@subdomain.example.com'
       ];
       
-      TestUtils.logStep('Testing various valid email formats');
+      console.log('Testing various valid email formats');
 
       for (const email of validEmails) {
         // Act
@@ -133,10 +131,10 @@ test.describe('Password Reset Workflow', () => {
   });
 
   test.describe('Invalid Password Recovery Requests', () => {
-    test('should show validation error for empty email', async ({ page: _page }) => {
+    test('should show validation error for empty email', async () => {
       // Arrange
-      const _testData = TestDataProvider.getTestData('password_reset', 'Empty Email Reset');
-      TestUtils.logStep('Testing empty email validation');
+      const _testData = TestDataFactory.createValidUserRegistrationData();
+      console.log('Testing empty email validation');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -147,7 +145,7 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Empty email validation working correctly');
     });
 
-    test('should show validation error for invalid email format', async ({ page: _page }) => {
+    test('should show validation error for invalid email format', async () => {
       // Arrange
       const invalidEmails = [
         'invalid-email',
@@ -158,7 +156,7 @@ test.describe('Password Reset Workflow', () => {
         'invalid@.com'
       ];
       
-      TestUtils.logStep('Testing invalid email format validation');
+      console.log('Testing invalid email format validation');
 
       for (const invalidEmail of invalidEmails) {
         // Act
@@ -171,9 +169,9 @@ test.describe('Password Reset Workflow', () => {
       }
     });
 
-    test('should validate email field on form submission without input', async ({ page: _page }) => {
+    test('should validate email field on form submission without input', async () => {
       // Arrange
-      TestUtils.logStep('Testing form submission without email input');
+      console.log('Testing form submission without email input');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -184,10 +182,10 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Empty form submission validation working correctly');
     });
 
-    test('should maintain form state after validation error', async ({ page: _page }) => {
+    test('should maintain form state after validation error', async () => {
       // Arrange
       const invalidEmail = 'invalid-email-format';
-      TestUtils.logStep('Testing form state persistence after validation error');
+      console.log('Testing form state persistence after validation error');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -206,9 +204,9 @@ test.describe('Password Reset Workflow', () => {
   });
 
   test.describe('Form Interaction and User Experience', () => {
-    test('should focus email field on page load', async ({ page: _page }) => {
+    test('should focus email field on page load', async () => {
       // Arrange
-      TestUtils.logStep('Testing email field focus on page load');
+      console.log('Testing email field focus on page load');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -218,9 +216,9 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Email field focus on page load working correctly');
     });
 
-    test('should enable recover button when email is entered', async ({ page: _page }) => {
+    test('should enable recover button when email is entered', async () => {
       // Arrange
-      TestUtils.logStep('Testing recover button state');
+      console.log('Testing recover button state');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -237,10 +235,10 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Recover button state working correctly');
     });
 
-    test('should clear email field when requested', async ({ page: _page }) => {
+    test('should clear email field when requested', async () => {
       // Arrange
       const testEmail = 'test@example.com';
-      TestUtils.logStep('Testing email field clearing functionality');
+      console.log('Testing email field clearing functionality');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -260,9 +258,9 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Email field clearing functionality working correctly');
     });
 
-    test('should navigate back to login page', async ({ page: _page }) => {
+    test('should navigate back to login page', async () => {
       // Arrange
-      TestUtils.logStep('Testing navigation back to login page');
+      console.log('Testing navigation back to login page');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -273,10 +271,10 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Navigation back to login page working correctly');
     });
 
-    test('should handle rapid form submissions gracefully', async ({ page: _page }) => {
+    test('should handle rapid form submissions gracefully', async () => {
       // Arrange
       const validEmail = 'test@example.com';
-      TestUtils.logStep('Testing rapid form submissions');
+      console.log('Testing rapid form submissions');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -293,10 +291,10 @@ test.describe('Password Reset Workflow', () => {
   });
 
   test.describe('Edge Cases and Security', () => {
-    test('should handle very long email addresses', async ({ page: _page }) => {
+    test('should handle very long email addresses', async () => {
       // Arrange
       const longEmail = 'a'.repeat(100) + '@example.com';
-      TestUtils.logStep('Testing very long email address handling');
+      console.log('Testing very long email address handling');
 
       // Act
       await passwordResetPage.navigateToPasswordRecoveryPage();
@@ -311,7 +309,7 @@ test.describe('Password Reset Workflow', () => {
       TestUtils.logInfo('Long email address handling tested');
     });
 
-    test('should handle special characters in email', async ({ page: _page }) => {
+    test('should handle special characters in email', async () => {
       // Arrange
       const specialCharEmails = [
         'user+tag@example.com',
@@ -320,7 +318,7 @@ test.describe('Password Reset Workflow', () => {
         'user_name@example.com'
       ];
       
-      TestUtils.logStep('Testing special characters in email addresses');
+      console.log('Testing special characters in email addresses');
 
       for (const email of specialCharEmails) {
         // Act
@@ -333,7 +331,7 @@ test.describe('Password Reset Workflow', () => {
       }
     });
 
-    test('should prevent XSS attempts in email field', async ({ page: _page }) => {
+    test('should prevent XSS attempts in email field', async () => {
       // Arrange
       const xssAttempts = [
         '<script>alert("xss")</script>@example.com',
@@ -341,7 +339,7 @@ test.describe('Password Reset Workflow', () => {
         'javascript:alert("xss")@example.com'
       ];
       
-      TestUtils.logStep('Testing XSS prevention in email field');
+      console.log('Testing XSS prevention in email field');
 
       for (const xssEmail of xssAttempts) {
         // Act
@@ -361,7 +359,7 @@ test.describe('Password Reset Workflow', () => {
       }
     });
 
-    test('should handle SQL injection attempts in email field', async ({ page: _page }) => {
+    test('should handle SQL injection attempts in email field', async () => {
       // Arrange
       const sqlInjectionAttempts = [
         "'; DROP TABLE users; --@example.com",
@@ -369,7 +367,7 @@ test.describe('Password Reset Workflow', () => {
         "' OR '1'='1@example.com"
       ];
       
-      TestUtils.logStep('Testing SQL injection prevention in email field');
+      console.log('Testing SQL injection prevention in email field');
 
       for (const sqlEmail of sqlInjectionAttempts) {
         // Act
@@ -388,9 +386,9 @@ test.describe('Password Reset Workflow', () => {
   });
 
   test.describe('Integration with Login Flow', () => {
-    test('should complete full password recovery flow from login page', async ({ page: _page }) => {
+    test('should complete full password recovery flow from login page', async () => {
       // Arrange
-      TestUtils.logStep('Testing complete password recovery flow from login page');
+      console.log('Testing complete password recovery flow from login page');
 
       // Act
       // Start from login page

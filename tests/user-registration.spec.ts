@@ -1,7 +1,6 @@
 import { test, expect } from '../src/fixtures/TestFixtures';
 import { RegistrationPage } from '../src/pages/RegistrationPage';
 import { TestDataFactory } from '../src/data/TestDataFactory';
-import { TestUtils } from '../src/utils/TestUtils';
 
 test.describe('User Registration Flow', () => {
   let registrationPage: RegistrationPage;
@@ -13,10 +12,10 @@ test.describe('User Registration Flow', () => {
   });
 
   test.describe('Valid Registration Scenarios', () => {
-    test('should successfully register with valid data - Standard Registration', async ({ testDataFactory }) => {
+    test('should successfully register with valid data - Standard Registration', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
-      TestUtils.logStep(`Registering user with email: ${registrationData.email}`);
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Registering user with email: ${registrationData.email}`);
 
       // Act
       await registrationPage.completeRegistration(registrationData);
@@ -36,7 +35,7 @@ test.describe('User Registration Flow', () => {
       testData.firstName = "O'Connor";
       testData.lastName = 'Smith-Jones';
       testData.company = 'O\'Connor & Associates';
-      TestUtils.logStep(`Registering user with special characters: ${testData.email}`);
+      console.log(`Registering user with special characters: ${testData.email}`);
 
       // Act
       await registrationPage.completeRegistration(testData);
@@ -53,7 +52,7 @@ test.describe('User Registration Flow', () => {
       testData.firstName = 'Bartholomew';
       testData.lastName = 'Constantinopolous';
       testData.company = 'Bartholomew Constantinopolous International Corporation';
-      TestUtils.logStep(`Registering user with long names: ${testData.email}`);
+      console.log(`Registering user with long names: ${testData.email}`);
 
       // Act
       await registrationPage.completeRegistration(testData);
@@ -63,10 +62,10 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Registration with long names completed successfully');
     });
 
-    test('should successfully register with optional fields filled', async ({ testDataFactory }) => {
+    test('should successfully register with optional fields filled', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
-      TestUtils.logStep(`Registering user with all optional fields: ${registrationData.email}`);
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
+      console.log(`Registering user with all optional fields: ${registrationData.email}`);
 
       // Act
       await registrationPage.fillRegistrationForm(registrationData);
@@ -77,11 +76,11 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Registration with optional fields completed successfully');
     });
 
-    test('should successfully register with newsletter subscription', async ({ testDataFactory }) => {
+    test('should successfully register with newsletter subscription', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
       registrationData.newsletter = true;
-      TestUtils.logStep(`Registering user with newsletter subscription: ${registrationData.email}`);
+      console.log(`Registering user with newsletter subscription: ${registrationData.email}`);
 
       // Act
       await registrationPage.completeRegistration(registrationData);
@@ -96,7 +95,7 @@ test.describe('User Registration Flow', () => {
     test('should show validation error for invalid email format', async () => {
       // Arrange
       const testData = TestDataFactory.createInvalidEmailRegistrationData();
-      TestUtils.logStep(`Testing invalid email format: ${testData.email}`);
+      console.log(`Testing invalid email format: ${testData.email}`);
 
       // Act
       await registrationPage.completeRegistration(testData);
@@ -109,7 +108,7 @@ test.describe('User Registration Flow', () => {
     test('should show validation error for password mismatch', async () => {
       // Arrange
       const testData = TestDataFactory.createMismatchedPasswordRegistrationData();
-      TestUtils.logStep('Testing password mismatch validation');
+      console.log('Testing password mismatch validation');
 
       // Act
       await registrationPage.completeRegistration(testData);
@@ -122,7 +121,7 @@ test.describe('User Registration Flow', () => {
     test('should show validation error for weak password', async () => {
       // Arrange
       const testData = TestDataFactory.createWeakPasswordRegistrationData();
-      TestUtils.logStep('Testing weak password validation');
+      console.log('Testing weak password validation');
 
       // Act
       await registrationPage.completeRegistration(testData);
@@ -135,7 +134,7 @@ test.describe('User Registration Flow', () => {
     test('should show validation errors for empty required fields', async () => {
       // Arrange
       const testData = TestDataFactory.createEmptyFieldsRegistrationData();
-      TestUtils.logStep('Testing empty required fields validation');
+      console.log('Testing empty required fields validation');
 
       // Act
       await registrationPage.completeRegistration(testData);
@@ -150,9 +149,9 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Empty required fields validation working correctly');
     });
 
-    test('should show error for existing email address', async ({ testDataFactory }) => {
+    test('should show error for existing email address', async () => {
       // Arrange - First register a user
-      const firstRegistrationData = testDataFactory.createValidUserRegistrationData();
+      const firstRegistrationData = TestDataFactory.createValidUserRegistrationData();
       await registrationPage.completeRegistration(firstRegistrationData);
       await registrationPage.verifySuccessfulRegistration();
 
@@ -160,9 +159,9 @@ test.describe('User Registration Flow', () => {
       await registrationPage.navigateToRegistrationPage();
 
       // Try to register with the same email
-      const duplicateRegistrationData = testDataFactory.createValidUserRegistrationData();
+      const duplicateRegistrationData = TestDataFactory.createValidUserRegistrationData();
       duplicateRegistrationData.email = firstRegistrationData.email;
-      TestUtils.logStep(`Testing duplicate email registration: ${duplicateRegistrationData.email}`);
+      console.log(`Testing duplicate email registration: ${duplicateRegistrationData.email}`);
 
       // Act
       await registrationPage.completeRegistration(duplicateRegistrationData);
@@ -176,7 +175,7 @@ test.describe('User Registration Flow', () => {
   test.describe('Form Interaction and Validation', () => {
     test('should validate required fields on form submission', async () => {
       // Arrange
-      TestUtils.logStep('Testing required field validation on empty form submission');
+      console.log('Testing required field validation on empty form submission');
 
       // Act
       await registrationPage.clickRegisterButton();
@@ -194,9 +193,9 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Required field validation working correctly');
     });
 
-    test('should clear validation errors when valid data is entered', async ({ testDataFactory }) => {
+    test('should clear validation errors when valid data is entered', async () => {
       // Arrange
-      TestUtils.logStep('Testing validation error clearing');
+      console.log('Testing validation error clearing');
 
       // First trigger validation errors
       await registrationPage.clickRegisterButton();
@@ -204,7 +203,7 @@ test.describe('User Registration Flow', () => {
       expect(hasValidationErrors).toBe(true);
 
       // Act - Fill valid data
-      const validData = testDataFactory.createValidUserRegistrationData();
+      const validData = TestDataFactory.createValidUserRegistrationData();
       await registrationPage.fillRegistrationForm(validData);
       await registrationPage.clickRegisterButton();
 
@@ -213,10 +212,10 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Validation errors cleared successfully with valid data');
     });
 
-    test('should maintain form data when validation fails', async ({ testDataFactory }) => {
+    test('should maintain form data when validation fails', async () => {
       // Arrange
-      const invalidData = testDataFactory.createInvalidEmailRegistrationData();
-      TestUtils.logStep('Testing form data persistence on validation failure');
+      const invalidData = TestDataFactory.createInvalidEmailRegistrationData();
+      console.log('Testing form data persistence on validation failure');
 
       // Act
       await registrationPage.fillRegistrationForm(invalidData);
@@ -235,11 +234,11 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Form data persistence working correctly');
     });
 
-    test('should handle gender selection correctly', async ({ testDataFactory }) => {
+    test('should handle gender selection correctly', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
       registrationData.gender = 'Female';
-      TestUtils.logStep('Testing gender selection');
+      console.log('Testing gender selection');
 
       // Act
       await registrationPage.fillPersonalDetails(registrationData);
@@ -257,11 +256,11 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Gender selection working correctly');
     });
 
-    test('should handle newsletter subscription correctly', async ({ testDataFactory }) => {
+    test('should handle newsletter subscription correctly', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
       registrationData.newsletter = true;
-      TestUtils.logStep('Testing newsletter subscription');
+      console.log('Testing newsletter subscription');
 
       // Act
       await registrationPage.fillPersonalDetails(registrationData);
@@ -279,10 +278,10 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Newsletter subscription working correctly');
     });
 
-    test('should handle date of birth selection correctly', async ({ testDataFactory }) => {
+    test('should handle date of birth selection correctly', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
-      TestUtils.logStep('Testing date of birth selection');
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
+      console.log('Testing date of birth selection');
 
       // Act
       await registrationPage.fillPersonalDetails(registrationData);
@@ -304,12 +303,12 @@ test.describe('User Registration Flow', () => {
   });
 
   test.describe('Edge Cases and Boundary Testing', () => {
-    test('should handle maximum length input fields', async ({ testDataFactory }) => {
+    test('should handle maximum length input fields', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
       registrationData.firstName = 'A'.repeat(100); // Very long first name
       registrationData.lastName = 'B'.repeat(100); // Very long last name
-      TestUtils.logStep('Testing maximum length input fields');
+      console.log('Testing maximum length input fields');
 
       // Act
       await registrationPage.completeRegistration(registrationData);
@@ -324,13 +323,13 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Maximum length input handling tested');
     });
 
-    test('should handle special characters in all fields', async ({ testDataFactory }) => {
+    test('should handle special characters in all fields', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
       registrationData.firstName = "Test'User-Name";
       registrationData.lastName = "O'Connor-Smith";
       registrationData.company = "Test & Associates, Inc.";
-      TestUtils.logStep('Testing special characters in all fields');
+      console.log('Testing special characters in all fields');
 
       // Act
       await registrationPage.completeRegistration(registrationData);
@@ -340,10 +339,10 @@ test.describe('User Registration Flow', () => {
       TestUtils.logInfo('Special characters handling working correctly');
     });
 
-    test('should handle rapid form submission', async ({ testDataFactory }) => {
+    test('should handle rapid form submission', async () => {
       // Arrange
-      const registrationData = testDataFactory.createValidUserRegistrationData();
-      TestUtils.logStep('Testing rapid form submission');
+      const registrationData = TestDataFactory.createValidUserRegistrationData();
+      console.log('Testing rapid form submission');
 
       // Act
       await registrationPage.fillRegistrationForm(registrationData);
