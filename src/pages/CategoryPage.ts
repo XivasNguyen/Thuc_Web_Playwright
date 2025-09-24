@@ -425,4 +425,100 @@ export class CategoryPage extends BasePage {
   async getNoProductsMessage(): Promise<string> {
     return await this.getElementText(this.noProductsMessage);
   }
+
+  /**
+   * Verify computers category is loaded
+   */
+  async verifyComputersCategoryLoaded(): Promise<void> {
+    await this.waitForElement(this.categoryTitle);
+    const title = await this.categoryTitle.textContent();
+    expect(title?.toLowerCase()).toContain('computers');
+  }
+
+  /**
+   * Navigate to subcategory
+   */
+  async navigateToSubcategory(subcategoryName: string): Promise<void> {
+    const subcategory = this.page.locator(`a:has-text("${subcategoryName}")`);
+    await subcategory.click();
+    await this.waitForPageLoad();
+  }
+
+  /**
+   * Verify notebooks subcategory is loaded
+   */
+  async verifyNotebooksSubcategoryLoaded(): Promise<void> {
+    await this.waitForElement(this.categoryTitle);
+    const title = await this.categoryTitle.textContent();
+    expect(title?.toLowerCase()).toContain('notebooks');
+  }
+
+  /**
+   * Verify products are displayed
+   */
+  async verifyProductsDisplayed(): Promise<void> {
+    await this.waitForElement(this.productItems.first());
+    const productCount = await this.productItems.count();
+    expect(productCount).toBeGreaterThan(0);
+  }
+
+  /**
+   * Verify breadcrumb navigation
+   */
+  async verifyBreadcrumb(expectedItems: string[]): Promise<void> {
+    await this.waitForElement(this.breadcrumb);
+    const breadcrumbText = await this.breadcrumb.textContent();
+    for (const item of expectedItems) {
+      expect(breadcrumbText).toContain(item);
+    }
+  }
+
+  /**
+   * Click breadcrumb item
+   */
+  async clickBreadcrumbItem(itemName: string): Promise<void> {
+    const breadcrumbItem = this.page.locator(`.breadcrumb a:has-text("${itemName}")`);
+    await breadcrumbItem.click();
+    await this.waitForPageLoad();
+  }
+
+  /**
+   * Sort products by price
+   */
+  async sortProductsByPrice(order: 'low-to-high' | 'high-to-low'): Promise<void> {
+    const sortValue = order === 'low-to-high' ? 'Price: Low to High' : 'Price: High to Low';
+    await this.sortByDropdown.selectOption({ label: sortValue });
+    await this.waitForPageLoad();
+  }
+
+  /**
+   * Verify products are sorted by price
+   */
+  async verifyProductsSortedByPrice(order: 'ascending' | 'descending'): Promise<void> {
+    await this.waitForElement(this.productPrices.first());
+    const prices = await this.productPrices.allTextContents();
+    const numericPrices = prices.map(price => parseFloat(price.replace(/[^0-9.]/g, '')));
+
+    for (let i = 1; i < numericPrices.length; i++) {
+      if (order === 'ascending') {
+        expect(numericPrices[i]).toBeGreaterThanOrEqual(numericPrices[i - 1]);
+      } else {
+        expect(numericPrices[i]).toBeLessThanOrEqual(numericPrices[i - 1]);
+      }
+    }
+  }
+
+  /**
+   * Verify products are in price range
+   */
+  async verifyProductsInPriceRange(minPrice: number, maxPrice: number): Promise<void> {
+    await this.waitForElement(this.productPrices.first());
+    const prices = await this.productPrices.allTextContents();
+    const numericPrices = prices.map(price => parseFloat(price.replace(/[^0-9.]/g, '')));
+
+    for (const price of numericPrices) {
+      expect(price).toBeGreaterThanOrEqual(minPrice);
+      expect(price).toBeLessThanOrEqual(maxPrice);
+    }
+  }
 }

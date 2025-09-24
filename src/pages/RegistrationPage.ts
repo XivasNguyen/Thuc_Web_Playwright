@@ -389,4 +389,32 @@ export class RegistrationPage extends BasePage {
     expect(fieldErrors.confirmPassword).toBeDefined();
     expect(fieldErrors.confirmPassword.toLowerCase()).toContain('match');
   }
+
+  /**
+   * Submit registration
+   */
+  async submitRegistration(): Promise<void> {
+    await this.clickRegisterButton();
+  }
+
+  /**
+   * Verify registration success
+   */
+  async verifyRegistrationSuccess(): Promise<void> {
+    await this.verifySuccessfulRegistration();
+  }
+
+  /**
+   * Verify email validation error
+   */
+  async verifyEmailValidationError(): Promise<void> {
+    await this.verifyEmailValidation();
+  }
+
+  /**
+   * Verify password mismatch error
+   */
+  async verifyPasswordMismatchError(): Promise<void> {
+    await this.verifyPasswordConfirmationValidation();
+  }
 }

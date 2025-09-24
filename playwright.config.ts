@@ -100,19 +100,6 @@ export default defineConfig({
         headless: environment.headless,
       },
     },
-    {
-      name: 'Mobile Chrome',
-      use: {
-        ...devices['Pixel 5'],
-        headless: environment.headless,
-      },
-    },
-    {
-      name: 'Mobile Safari',
-      use: {
-        ...devices['iPhone 12'],
-        headless: environment.headless,
-      },
-    },
+
   ],
 });

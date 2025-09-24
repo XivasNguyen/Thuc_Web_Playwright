@@ -266,4 +266,55 @@ export class PasswordResetPage extends BasePage {
     await this.clickBackToLogin();
     await this.verifyCurrentUrl('/login');
   }
+
+  /**
+   * Navigate to password reset page
+   */
+  async navigateToPasswordResetPage(): Promise<void> {
+    await this.navigateToPasswordRecoveryPage();
+  }
+
+  /**
+   * Verify password reset page is loaded
+   */
+  async verifyPasswordResetPageIsLoaded(): Promise<void> {
+    await this.waitForElement(this.pageTitle);
+    await this.waitForElement(this.emailField);
+    await this.waitForElement(this.recoverButton);
+  }
+
+  /**
+   * Enter email
+   */
+  async enterEmail(email: string): Promise<void> {
+    await this.fillEmail(email);
+  }
+
+  /**
+   * Submit password reset request
+   */
+  async submitPasswordResetRequest(): Promise<void> {
+    await this.clickRecoverButton();
+  }
+
+  /**
+   * Verify password reset request success
+   */
+  async verifyPasswordResetRequestSuccess(): Promise<void> {
+    await this.verifySuccessMessage();
+  }
+
+  /**
+   * Verify empty email error
+   */
+  async verifyEmptyEmailError(): Promise<void> {
+    await this.verifyValidationError();
+  }
+
+  /**
+   * Verify invalid email error
+   */
+  async verifyInvalidEmailError(): Promise<void> {
+    await this.verifyValidationError();
+  }
 }

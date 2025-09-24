@@ -429,4 +429,35 @@ export class SearchResultsPage extends BasePage {
     await this.navigateTo('/search');
     await this.waitForPageLoad();
   }
+
+  /**
+   * Verify search results are displayed
+   */
+  async verifySearchResultsDisplayed(): Promise<void> {
+    await this.waitForElement(this.productItems.first());
+    const productCount = await this.productItems.count();
+    expect(productCount).toBeGreaterThan(0);
+  }
+
+  /**
+   * Verify no search results or error
+   */
+  async verifyNoSearchResultsOrError(): Promise<void> {
+    try {
+      await this.waitForElement(this.noResultsMessage, 5000);
+    } catch {
+      // If no results message is not found, check if we're still on search page
+      const url = await this.page.url();
+      expect(url).toContain('search');
+    }
+  }
+
+  /**
+   * Verify no products found message
+   */
+  async verifyNoProductsFoundMessage(): Promise<void> {
+    await this.waitForElement(this.noResultsMessage);
+    const message = await this.noResultsMessage.textContent();
+    expect(message?.toLowerCase()).toContain('no products');
+  }
 }

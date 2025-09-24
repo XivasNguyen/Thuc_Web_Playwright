@@ -1,6 +1,6 @@
 # 🎭 Playwright Test Automation Framework
 
-A comprehensive, production-ready test automation framework built with **Playwright** and **TypeScript** for testing the nopCommerce demo store. This framework implements industry best practices including Page Object Model (POM), data-driven testing, comprehensive reporting, and CI/CD integration.
+A streamlined, production-ready test automation framework built with **Playwright** and **TypeScript** for testing the nopCommerce demo store. This framework focuses on **10 critical test cases** covering essential e-commerce workflows with desktop browser support (Chromium, Firefox, WebKit).
 
 ## 🌟 Core Features
 
@@ -23,28 +23,58 @@ A comprehensive, production-ready test automation framework built with **Playwri
 - **Code Quality Improvements**: Fixed unused imports, added proper parameter prefixing for unused variables, and improved type safety
 - **Framework Simplification**: Removed performance monitoring and API testing functionality to focus on core UI testing capabilities
 - **Core Requirements Focus**: Streamlined framework to include only the 7 essential requirements: POM, HTML reporting, failure artifacts, environment config, cloud execution, CI/CD, and parallel execution
+- **Test Suite Optimization**: Reduced from 420 tests to exactly 10 critical test cases covering essential e-commerce workflows
+- **Browser Configuration**: Removed mobile browser support, focusing on desktop browsers only (Chromium, Firefox, WebKit)
+- **Simplified Test Structure**: Consolidated test scenarios into 5 focused test files with 2 test cases each
+- **Streamlined CI/CD**: Simplified GitHub Actions workflow by removing fancy features (scheduled runs, matrix builds, report merging, GitHub Pages deployment, Slack notifications, performance monitoring)
+
+## 🧪 Test Coverage (10 Critical Test Cases)
+
+### 1. **User Registration (2 test cases)**
+- ✅ Register a new account with valid data
+- ✅ Handle registration validation errors (invalid email, password mismatch, etc.)
+
+### 2. **Password Reset Workflow (2 test cases)**
+- ✅ Request password reset for an existing user email
+- ✅ Handle password reset validation (invalid email, empty fields)
+
+### 3. **Product Search (2 test cases)**
+- ✅ Search for products with valid search terms
+- ✅ Handle empty or invalid search queries
+
+### 4. **Product Discovery (2 test cases)**
+- ✅ Browse products by category (e.g., Computers → Notebooks)
+- ✅ Navigate category hierarchy and verify breadcrumbs
+
+### 5. **Product Filtering & Sorting (2 test cases)**
+- ✅ Sort products by price (low to high, high to low)
+- ✅ Filter products by manufacturers and price range
+
+**Total Test Executions**: 30 (10 test cases × 3 desktop browsers)
 
 ## 🏗️ Framework Architecture
 
 ```
 src/
 ├── config/                 # Environment and test configurations
-├── data/                   # Test data factories and providers
-├── fixtures/               # Playwright test fixtures and extensions
+├── data/                   # Core test data factory
+├── fixtures/               # Essential test fixtures
 ├── pages/                  # Page Object Model implementation
 │   ├── base/              # Base page classes
-│   ├── components/        # Reusable page components
-│   └── *.ts              # Specific page objects
-├── reporters/             # Custom test reporters
-├── utils/                 # Utility functions and helpers
-tests/                     # Test specifications
-├── *.spec.ts             # Test files
+│   └── *.ts              # Specific page objects (HomePage, CategoryPage, etc.)
+├── reporters/             # Core HTML reporter
+└── utils/                 # Essential reporting utilities
+tests/                     # 5 Test specification files (10 test cases total)
+├── user-registration.spec.ts      # User registration tests (2 cases)
+├── password-reset.spec.ts         # Password reset tests (2 cases)
+├── product-search.spec.ts         # Product search tests (2 cases)
+├── product-discovery.spec.ts      # Product discovery tests (2 cases)
+└── product-filtering-sorting.spec.ts # Filtering & sorting tests (2 cases)
 test-results/              # Test execution artifacts
 ├── html-report/          # Standard HTML reports
 ├── screenshots/          # Failure screenshots
 ├── traces/               # Playwright traces
-├── videos/               # Test execution videos
-└── logs/                 # Console and network logs
+└── logs/                 # Console logs
 ```
 
 ## 🚀 Quick Start
