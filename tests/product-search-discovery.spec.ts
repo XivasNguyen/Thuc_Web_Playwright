@@ -8,7 +8,7 @@ test.describe('Product Search and Discovery', () => {
   let searchResultsPage: SearchResultsPage;
   let categoryPage: CategoryPage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page: _page }) => {
     searchResultsPage = new SearchResultsPage(page);
     categoryPage = new CategoryPage(page);
   });
@@ -139,7 +139,7 @@ test.describe('Product Search and Discovery', () => {
   test.describe('Category Browsing', () => {
     test('should browse Computers category and display subcategories', async ({ page, headerComponent }) => {
       // Arrange
-      const categoryData = TestDataProvider.getTestData('category', 'Computers Category');
+      const _categoryData = TestDataProvider.getTestData('category', 'Computers Category');
       TestUtils.logStep('Browsing Computers category');
 
       // Act
@@ -165,7 +165,7 @@ test.describe('Product Search and Discovery', () => {
 
     test('should browse Electronics category and display products', async ({ page, headerComponent }) => {
       // Arrange
-      const categoryData = TestDataProvider.getTestData('category', 'Electronics Category');
+      const _categoryData = TestDataProvider.getTestData('category', 'Electronics Category');
       TestUtils.logStep('Browsing Electronics category');
 
       // Act
@@ -230,7 +230,7 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Product Sorting', () => {
-    test('should sort products by price (low to high)', async ({ page }) => {
+    test('should sort products by price (low to high)', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing price sorting (low to high)');
 
@@ -243,7 +243,7 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted by price (low to high) successfully');
     });
 
-    test('should sort products by price (high to low)', async ({ page }) => {
+    test('should sort products by price (high to low)', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing price sorting (high to low)');
 
@@ -256,7 +256,7 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted by price (high to low) successfully');
     });
 
-    test('should sort products alphabetically (A to Z)', async ({ page }) => {
+    test('should sort products alphabetically (A to Z)', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing alphabetical sorting (A to Z)');
 
@@ -269,7 +269,7 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted alphabetically (A to Z) successfully');
     });
 
-    test('should sort products alphabetically (Z to A)', async ({ page }) => {
+    test('should sort products alphabetically (Z to A)', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing alphabetical sorting (Z to A)');
 
@@ -282,7 +282,7 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Products sorted alphabetically (Z to A) successfully');
     });
 
-    test('should maintain sorting after page refresh', async ({ page }) => {
+    test('should maintain sorting after page refresh', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing sorting persistence after page refresh');
 
@@ -307,7 +307,7 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Product Filtering', () => {
-    test('should filter products by price range', async ({ page }) => {
+    test('should filter products by price range', async ({ page: _page }) => {
       // Arrange
       const filterData = TestDataProvider.getTestData('filter', 'Price Filter Low to High');
       TestUtils.logStep(`Testing price range filter: $${filterData.priceRange.min} - $${filterData.priceRange.max}`);
@@ -321,7 +321,7 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Price range filtering working correctly');
     });
 
-    test('should filter products by manufacturer', async ({ page }) => {
+    test('should filter products by manufacturer', async ({ page: _page }) => {
       // Arrange
       const filterData = TestDataProvider.getTestData('filter', 'Manufacturer Filter');
       TestUtils.logStep(`Testing manufacturer filter: ${filterData.manufacturer}`);
@@ -343,7 +343,7 @@ test.describe('Product Search and Discovery', () => {
       }
     });
 
-    test('should combine multiple filters', async ({ page }) => {
+    test('should combine multiple filters', async ({ page: _page }) => {
       // Arrange
       const filterData = TestDataProvider.getTestData('filter', 'Combined Filters');
       TestUtils.logStep('Testing combined filters (price + manufacturer)');
@@ -376,7 +376,7 @@ test.describe('Product Search and Discovery', () => {
   });
 
   test.describe('Display Options and Pagination', () => {
-    test('should switch between grid and list view', async ({ page }) => {
+    test('should switch between grid and list view', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing display mode switching');
 
@@ -397,7 +397,7 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo('Display mode switching working correctly');
     });
 
-    test('should change page size', async ({ page }) => {
+    test('should change page size', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing page size change');
 
@@ -416,7 +416,7 @@ test.describe('Product Search and Discovery', () => {
       TestUtils.logInfo(`Page size changed: ${initialProductCount} -> ${newProductCount} products`);
     });
 
-    test('should handle pagination if available', async ({ page }) => {
+    test('should handle pagination if available', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing pagination functionality');
 

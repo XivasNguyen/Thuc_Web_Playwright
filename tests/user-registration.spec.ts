@@ -1,6 +1,5 @@
 import { test, expect } from '../src/fixtures/TestFixtures';
 import { RegistrationPage } from '../src/pages/RegistrationPage';
-import { TestDataProvider } from '../src/data/TestDataProvider';
 import { TestDataFactory } from '../src/data/TestDataFactory';
 import { TestUtils } from '../src/utils/TestUtils';
 
@@ -201,7 +200,7 @@ test.describe('User Registration Flow', () => {
 
       // First trigger validation errors
       await registrationPage.clickRegisterButton();
-      let hasValidationErrors = await registrationPage.hasValidationErrors();
+      const hasValidationErrors = await registrationPage.hasValidationErrors();
       expect(hasValidationErrors).toBe(true);
 
       // Act - Fill valid data

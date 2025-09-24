@@ -18,13 +18,20 @@
     "test:safari": "npx playwright test --project=webkit",
     "test:mobile": "npx playwright test --project='Mobile Chrome'",
     "install:browsers": "npx playwright install",
-    "lint": "eslint tests/ --ext .ts",
+    "lint": "eslint src/ tests/ --fix",
     "format": "prettier --write tests/"
   },
-  "keywords": ["playwright", "automation", "testing", "e2e", "nopcommerce"],
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "e2e",
+    "nopcommerce"
+  ],
   "author": "Test Automation Team",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.36.0",
     "@playwright/test": "^1.55.1",
     "@types/node": "^24.5.2",
     "@typescript-eslint/eslint-plugin": "^8.0.0",

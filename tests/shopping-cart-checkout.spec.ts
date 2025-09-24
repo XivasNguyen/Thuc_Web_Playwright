@@ -10,7 +10,7 @@ test.describe('Shopping Cart and Checkout', () => {
   let productDetailsPage: ProductDetailsPage;
   let searchResultsPage: SearchResultsPage;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page: _page }) => {
     shoppingCartPage = new ShoppingCartPage(page);
     productDetailsPage = new ProductDetailsPage(page);
     searchResultsPage = new SearchResultsPage(page);
@@ -70,7 +70,7 @@ test.describe('Shopping Cart and Checkout', () => {
 
     test('should add multiple different products to cart', async ({ page, headerComponent }) => {
       // Arrange
-      const testData = TestDataProvider.getTestData('shopping_cart', 'Add Multiple Products');
+      const _testData = TestDataProvider.getTestData('shopping_cart', 'Add Multiple Products');
       TestUtils.logStep('Adding multiple different products to cart');
 
       // Act & Assert
@@ -127,7 +127,7 @@ test.describe('Shopping Cart and Checkout', () => {
       await shoppingCartPage.navigateToShoppingCart();
     });
 
-    test('should update product quantity in cart', async ({ page }) => {
+    test('should update product quantity in cart', async ({ page: _page }) => {
       // Arrange
       const newQuantity = 5;
       TestUtils.logStep(`Updating product quantity to ${newQuantity}`);
@@ -140,7 +140,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo(`Successfully updated quantity to ${newQuantity}`);
     });
 
-    test('should remove product from cart', async ({ page }) => {
+    test('should remove product from cart', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Removing product from cart');
       
@@ -161,7 +161,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo('Successfully removed product from cart');
     });
 
-    test('should clear entire cart', async ({ page }) => {
+    test('should clear entire cart', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Clearing entire cart');
 
@@ -183,7 +183,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo('Successfully cleared entire cart');
     });
 
-    test('should calculate cart totals correctly', async ({ page }) => {
+    test('should calculate cart totals correctly', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Verifying cart total calculations');
 
@@ -199,7 +199,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo(`Cart totals: Subtotal: $${subtotal}, Total: $${total}`);
     });
 
-    test('should handle quantity validation', async ({ page }) => {
+    test('should handle quantity validation', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing quantity validation');
 
@@ -228,9 +228,9 @@ test.describe('Shopping Cart and Checkout', () => {
       await shoppingCartPage.navigateToShoppingCart();
     });
 
-    test('should apply discount coupon', async ({ page }) => {
+    test('should apply discount coupon', async ({ page: _page }) => {
       // Arrange
-      const testData = TestDataProvider.getTestData('shopping_cart', 'Add Single Product');
+      const _testData = TestDataProvider.getTestData('shopping_cart', 'Add Single Product');
       const couponCode = 'TESTCOUPON';
       TestUtils.logStep(`Applying discount coupon: ${couponCode}`);
 
@@ -242,7 +242,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo(`Coupon application tested for: ${couponCode}`);
     });
 
-    test('should apply gift card', async ({ page }) => {
+    test('should apply gift card', async ({ page: _page }) => {
       // Arrange
       const giftCardCode = 'TESTGIFT';
       TestUtils.logStep(`Applying gift card: ${giftCardCode}`);
@@ -255,7 +255,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo(`Gift card application tested for: ${giftCardCode}`);
     });
 
-    test('should estimate shipping', async ({ page }) => {
+    test('should estimate shipping', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing shipping estimation');
 
@@ -264,13 +264,13 @@ test.describe('Shopping Cart and Checkout', () => {
 
       // Assert
       // Verify no errors occurred
-      const isErrorDisplayed = await shoppingCartPage.isErrorMessageDisplayed();
+      const _isErrorDisplayed = await shoppingCartPage.isErrorMessageDisplayed();
       expect(isErrorDisplayed).toBe(false);
       
       TestUtils.logInfo('Shipping estimation completed');
     });
 
-    test('should continue shopping from cart', async ({ page }) => {
+    test('should continue shopping from cart', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing continue shopping functionality');
 
@@ -285,7 +285,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo('Continue shopping functionality working');
     });
 
-    test('should handle empty cart state', async ({ page }) => {
+    test('should handle empty cart state', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing empty cart state');
 
@@ -312,7 +312,7 @@ test.describe('Shopping Cart and Checkout', () => {
       await shoppingCartPage.navigateToShoppingCart();
     });
 
-    test('should proceed to checkout with terms acceptance', async ({ page }) => {
+    test('should proceed to checkout with terms acceptance', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing checkout process with terms acceptance');
 
@@ -328,7 +328,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo('Checkout process initiated successfully');
     });
 
-    test('should require terms of service acceptance', async ({ page }) => {
+    test('should require terms of service acceptance', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing terms of service requirement');
 
@@ -338,7 +338,7 @@ test.describe('Shopping Cart and Checkout', () => {
       // Assert
       // Should either show error or require terms acceptance
       const currentUrl = shoppingCartPage.getCurrentUrl();
-      const isErrorDisplayed = await shoppingCartPage.isErrorMessageDisplayed();
+      const _isErrorDisplayed = await shoppingCartPage.isErrorMessageDisplayed();
       
       // Should either stay on cart page with error or proceed (depending on implementation)
       expect(currentUrl.includes('/cart') || currentUrl.includes('/checkout') || currentUrl.includes('/login')).toBe(true);
@@ -346,7 +346,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo('Terms of service requirement tested');
     });
 
-    test('should handle checkout for guest user', async ({ page }) => {
+    test('should handle checkout for guest user', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing guest checkout process');
 
@@ -361,7 +361,7 @@ test.describe('Shopping Cart and Checkout', () => {
       TestUtils.logInfo('Guest checkout process initiated');
     });
 
-    test('should maintain cart contents during checkout process', async ({ page }) => {
+    test('should maintain cart contents during checkout process', async ({ page: _page }) => {
       // Arrange
       TestUtils.logStep('Testing cart contents persistence during checkout');
       

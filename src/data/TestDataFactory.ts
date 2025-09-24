@@ -119,33 +119,7 @@ export class TestDataFactory {
     };
   }
 
-  /**
-   * Generate user registration data with weak password
-   */
-  static createWeakPasswordRegistrationData(): UserRegistrationData {
-    const validData = this.createValidUserRegistrationData();
-    return {
-      ...validData,
-      password: '123',
-      confirmPassword: '123',
-    };
-  }
 
-  /**
-   * Generate user registration data with empty required fields
-   */
-  static createEmptyFieldsRegistrationData(): UserRegistrationData {
-    return {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      company: '',
-      gender: 'Male',
-      newsletter: false,
-    };
-  }
 
   /**
    * Generate user registration data with weak password

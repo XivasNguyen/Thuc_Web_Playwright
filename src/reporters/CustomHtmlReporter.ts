@@ -39,7 +39,7 @@ export default class CustomHtmlReporter implements Reporter {
     console.log(`${emoji} ${test.title} (${result.duration}ms)`);
   }
 
-  onEnd(result: FullResult) {
+  onEnd(_result: FullResult) {
     this.endTime = new Date();
     this.generateHtmlReport();
     console.log(`📊 Custom HTML report generated: ${this.reportPath}`);

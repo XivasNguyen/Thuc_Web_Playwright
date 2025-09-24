@@ -111,14 +111,14 @@ export const test = base.extend<TestFixtures>({
   /**
    * Test data factory fixture
    */
-  testDataFactory: async ({}, use) => {
+  testDataFactory: async (_fixtures, use) => {
     await use(TestDataFactory);
   },
 
   /**
    * Test utils fixture
    */
-  testUtils: async ({}, use) => {
+  testUtils: async (_fixtures, use) => {
     await use(TestUtils);
   },
 });
@@ -263,7 +263,7 @@ export const apiTest = test.extend<TestFixtures & { apiContext: any }>({
  * Database test fixture (if database access is needed)
  */
 export const databaseTest = test.extend<TestFixtures & { dbConnection: any }>({
-  dbConnection: async ({}, use) => {
+  dbConnection: async (_fixtures, use) => {
     // Mock database connection for demo purposes
     const mockDb = {
       query: async (sql: string) => {
@@ -305,7 +305,7 @@ export const screenshotTest = test.extend<TestFixtures>({
  * Retry fixture for flaky tests
  */
 export const retryTest = test.extend<TestFixtures>({
-  page: async ({ page }, use, testInfo) => {
+  page: async ({ page }, use, _testInfo) => {
     // Add retry logic for specific operations
     const originalGoto = page.goto.bind(page);
     page.goto = async (url: string, options?: any) => {
